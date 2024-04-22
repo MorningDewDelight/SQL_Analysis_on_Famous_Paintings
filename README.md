@@ -32,6 +32,7 @@ HAVING nop ISNULL;
 
 
 2.	Fetch all the paintings which are not displayed on any Museum?
+
 SELECT *
 
 FROM work 

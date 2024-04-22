@@ -1,13 +1,21 @@
 # SQL_Analysis_on_Famous_Paintings
 SQL_Analysis_on_Famous_Paintings
 SELECT * FROM artist;
+
 SELECT * FROM canvas_size;
+
 SELECT * FROM image_link;
+
 SELECT * FROM museum;
+
 SELECT * FROM museum_hours;
+
 SELECT * FROM product_size;
+
 SELECT * FROM subject;
+
 SELECT * FROM work;
+
 
 1.	Are there museums without any paintings?
 

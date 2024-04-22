@@ -1,5 +1,5 @@
 # SQL_Analysis_on_Famous_Paintings
-SQL_Analysis_on_Famous_Paintings
+
 
 SELECT * FROM artist;
 

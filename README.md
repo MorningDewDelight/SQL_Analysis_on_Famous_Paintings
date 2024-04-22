@@ -82,7 +82,6 @@ LIMIT 10;
 8.	 Identify the museums which are open on both Sunday and Monday. Display museum name, city.
 
 WITH cte AS
-
 	(SELECT museum_id, COUNT(day) AS cnt
  
 	FROM (

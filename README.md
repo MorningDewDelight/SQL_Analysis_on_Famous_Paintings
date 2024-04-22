@@ -43,7 +43,7 @@ FROM work
 
 WHERE museum_id ISNULL;
 
-4.	 How many paintings have an asking price of more than their regular price?
+3.	 How many paintings have an asking price of more than their regular price?
 
 SELECT COUNT(*) AS Markedup_Total 
 
@@ -52,7 +52,7 @@ FROM product_size
 WHERE sale_price > regular_price;
 
 
-5.	Identify the paintings whose asking price is less than 50% of its regular price?
+4.	Identify the paintings whose asking price is less than 50% of its regular price?
 
 SELECT *
 
@@ -61,7 +61,7 @@ FROM product_size
 WHERE sale_price < (regular_price/2);
 
 
-6.	Identify the museums with invalid city information in the given dataset
+5.	Identify the museums with invalid city information in the given dataset
 
 SELECT *
 
@@ -70,7 +70,7 @@ FROM museum
 WHERE city REGEXP '^[0-9]';
 
 
-7.	 Fetch the top 10 most famous painting subject
+6.	 Fetch the top 10 most famous painting subject
 
 SELECT subject, count(work_id) AS nos
 
@@ -83,7 +83,7 @@ ORDER BY nos DESC
 LIMIT 10;
 
 
-8.	 Identify the museums which are open on both Sunday and Monday. Display museum name, city.
+7.	 Identify the museums which are open on both Sunday and Monday. Display museum name, city.
 
 WITH cte AS
 
@@ -108,7 +108,7 @@ WHERE m.museum_id IN
 (SELECT cte.museum_id FROM cte);
 
 
-9.	 How many museums are open every single day?
+8.	 How many museums are open every single day?
 
 SELECT COUNT(a.museum_id) 
 
@@ -135,7 +135,7 @@ FROM(
   WHERE x.rn = 7;
   
 
-10.	Which are the top 5 most popular museum? (Popularity is defined based on most no of paintings in a museum)
+9.	Which are the top 5 most popular museum? (Popularity is defined based on most no of paintings in a museum)
 
 SELECT m.museum_id, m.name, m.country,
 
@@ -152,7 +152,7 @@ ORDER BY No_Of_Paintings DESC
 LIMIT 5;
 
 
-11.	 Who are the top 5 most popular artist? (Popularity is defined based on most no of paintings done by an artist)
+10.	 Who are the top 5 most popular artist? (Popularity is defined based on most no of paintings done by an artist)
 
 SELECT a.artist_id, a.full_name, a.nationality,
 
@@ -169,7 +169,7 @@ ORDER BY No_Of_Paintings DESC
 LIMIT 5;
 
 
-12.	 Which museum is open for the longest during a day. Display museum name, state and hours open and which day?
+11.	 Which museum is open for the longest during a day. Display museum name, state and hours open and which day?
 
 SELECT * FROM (
 
@@ -191,7 +191,7 @@ WHERE a.rnk=1;
 
 
 
-13.	Which museum has the most painting style?
+12.	Which museum has the most painting style?
 
 SELECT w.museum_id, m.name, m.country, 
 
@@ -209,7 +209,7 @@ LIMIT 1;
 
 
 
-14.	Which museum has the most no. of most popular painting style?
+13.	Which museum has the most no. of most popular painting style?
 
 SELECT m.museum_id,m.name, w.style,count(w.work_id) AS no_of_paintings
 
@@ -232,7 +232,7 @@ ORDER BY no_of_paintings DESC
 LIMIT 1;
 
 
-15.	 Identify the top 5 artists whose paintings are displayed in multiple countries.
+14.	 Identify the top 5 artists whose paintings are displayed in multiple countries.
 
 SELECT w.artist_id, a.full_name, a.nationality, 
 
@@ -254,7 +254,7 @@ LIMIT 5;
 
 
 
-16.	 Which country has the 5th highest no of paintings?
+15.	 Which country has the 5th highest no of paintings?
 
 SELECT * FROM(
 
@@ -290,7 +290,7 @@ LIMIT 1
 OFFSET 4;
 
 
-17.	Which are the 3 most popular and 3 least popular painting styles?
+16.	Which are the 3 most popular and 3 least popular painting styles?
 
 SELECT * FROM(
 
@@ -326,7 +326,7 @@ ORDER BY no_of_paintings DESC;
 
 
 
-18.	 Which artist has the most no. of Portraits paintings outside USA?. Display artist name, no of paintings and the artist nationality.
+17.	 Which artist has the most no. of Portraits paintings outside USA?. Display artist name, no of paintings and the artist nationality.
 
 SELECT w.artist_id, a.full_name, a.nationality, 
 
@@ -347,4 +347,39 @@ GROUP BY w.artist_id, a.full_name, a.nationality
 ORDER BY no_of_portraits DESC
 
 LIMIT 2;
+
+
+18.	Display the country and city with the most number of museums. Output two separate columns to display country and city, if there are multiple values separate them with comma.
+
+WITH cte_country AS
+
+	(SELECT country, count(museum_id),
+ 
+	RANK() OVER(ORDER BY COUNT(1) DESC) AS rnk 
+ 
+	FROM museum
+ 	
+	GROUP BY country),
+ 
+     cte_city AS
+     
+    	(SELECT city, COUNT(museum_id),
+     
+     	RANK() OVER(ORDER BY COUNT(museum_id) DESC) AS rnk 
+      
+      	FROM museum 
+       
+       	GROUP BY city)
+	
+SELECT country, STRING_AGG(city, ' , ') AS cities
+
+FROM cte_country
+
+CROSS JOIN cte_city
+
+WHERE cte_country.rnk = 1
+
+AND cte_city.rnk = 1;
+
+
 

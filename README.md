@@ -4,6 +4,7 @@ Kaggle dataset link:
 https://www.kaggle.com/datasets/mexwell/famous-paintings
 
 
+Viewing all tables in our dataset:
 
 SELECT * FROM artist;
 
